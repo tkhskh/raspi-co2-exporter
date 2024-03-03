@@ -102,3 +102,6 @@ crontab -e
       - localhost:9100
       - 192.168.0.50:9100 ★
 ```
+### grafana 設定
+#### grafana-co2.json をインポートする
+
