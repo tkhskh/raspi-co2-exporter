@@ -1,8 +1,8 @@
 # raspi-co2-exporter
 ## 概要
-ラズパイにCO2センサー mh_z19 で二酸化炭素を測定し、node-exporter でデータ取得し、prometheusでグラフ化する。
-![グラフ](img/raspi-grafana.jpg)
-![mh_z19図](img/mh_z19.jpg)
+ラズパイにCO2センサー mh_z19 で二酸化炭素を測定し、node-exporter でデータ取得し、prometheusでグラフ化する。  
+![グラフ](img/raspi-grafana.jpg)  
+![mh_z19図](img/mh_z19.jpg)  
 ### ラズパイ設定
 #### シリアル設定
 rootで作業
@@ -63,4 +63,42 @@ apt install prometheus-node-exporter-collectors
 #### node-exporter で読み込むテキストデータの場所
 ```
 ls -l /var/lib/prometheus/node-exporter/
+```
+
+#### 動作確認
+```
+chmod 755 collect-co2.sh
+./collect-co2.sh
+```
+#### 以下に保存されていることを確認
+```
+ls -l /var/lib/prometheus/node-exporter/
+cat /var/lib/prometheus/node-exporter/mh_z19.prom
+```
+出力例
+```
+mh_z19_co2 713
+mh_z19_co2_retry 0
+```
+
+#### crontab 
+```
+crontab -e
+```
+追加する
+```
+### raspi-co2-exporter ###
+* * * * * /root/collect-co2.sh
+```
+
+### prometheus 設定
+#### prometheus.yaml に追記する
+```
+  - job_name: node
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+    - targets:
+      - localhost:9100
+      - 192.168.0.50:9100 ★
 ```
