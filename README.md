@@ -105,3 +105,6 @@ crontab -e
 ### grafana 設定
 #### grafana-co2.json をインポートする
 
+### 参考
+https://github.com/UedaTakeyuki/mh-z19
+
